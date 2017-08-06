@@ -8,10 +8,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 /* 
-Освобождаем ресурсы
+Требования:
+1. Метод finalize в классе Solution должен содержать вызов super.finalize().
+2. Метод finalize в классе Solution должен корректно завершаться в случае, если значение поля connection равно null.
+3. Метод finalize в классе Solution должен закрывать текущее соединение, если значение поля connection не равно null.
+4. Метод getUsers должен корректно использовать try-with-resources.
 */
 public class Solution {
-    /*private Connection connection;
+    private Connection connection;
 
     public Solution(Connection connection) {
         this.connection = connection;
@@ -22,12 +26,9 @@ public class Solution {
 
         List<User> result = new LinkedList();
 
-        Statement stmt = null;
-        ResultSet rs = null;
 
-        try {
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery(query);
+        try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+
             while (rs.next()) {
                 int id = rs.getInt("ID");
                 String name = rs.getString("DISPLAYED_NAME");
@@ -39,21 +40,6 @@ public class Solution {
         } catch (SQLException e) {
             e.printStackTrace();
             result = null;
-        } finally {
-            if(stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
         return result;
     }
@@ -81,16 +67,22 @@ public class Solution {
                     '}';
         }
     }
-*/
-    public static class Car{
 
+    protected void finalize() throws SQLException {
+        if (connection != null) {
+            try {
+                connection.close();
+            } finally {
+                try {
+                    super.finalize();
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+            }
+        }
     }
-    public static class Porsche extends Car{
 
-    }
     public static void main(String[] args) {
-        Car car = new Porsche();
-        String result = "My car is " + car.toString();
-        System.out.println(result);
+
     }
 }
