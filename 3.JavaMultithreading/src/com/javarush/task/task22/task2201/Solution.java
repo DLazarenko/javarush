@@ -1,8 +1,17 @@
 package com.javarush.task.task22.task2201;
 
-/* 
-Строки нитей или строковые нити? Вот в чем вопрос
-*/
+/**
+ * 1. Метод getPartOfString должен возвращать подстроку между первой и последней табуляцией.
+ * 2. На некорректные данные getPartOfString должен бросить исключение:
+ * а) TooShortStringFirstThreadException, если имя трэда FIRST_THREAD_NAME.
+ * б) TooShortStringSecondThreadException, если имя трэда SECOND_THREAD_NAME.
+ * в) RuntimeException в других случаях.
+ * 3. Реализуйте логику трех protected методов в ThisUncaughtExceptionHandler
+ * используя вызовы соответствующих методов согласно следующим шаблонам:
+ * a) 1# : TooShortStringFirstThreadException : java.lang.StringIndexOutOfBoundsException: String index out of range: -1
+ * б) java.lang.StringIndexOutOfBoundsException: String index out of range: -1 : TooShortStringSecondThreadException : 2#
+ * в) RuntimeException : java.lang.StringIndexOutOfBoundsException: String index out of range: -1 : 3#
+ */
 public class Solution {
     public static void main(String[] args) {
         new Solution();
@@ -32,7 +41,19 @@ public class Solution {
     }
 
     public synchronized String getPartOfString(String string, String threadName) {
-
-        return null;
+        String result;
+        try {
+            result = string.substring(string.indexOf("\t") + 1, string.lastIndexOf("\t"));
+        } catch (StringIndexOutOfBoundsException e) {
+            switch (threadName) {
+                case FIRST_THREAD_NAME:
+                    throw new TooShortStringFirstThreadException(e);
+                case SECOND_THREAD_NAME:
+                    throw new TooShortStringSecondThreadException(e);
+                default:
+                    throw new RuntimeException(e);
+            }
+        }
+        return result;
     }
 }
