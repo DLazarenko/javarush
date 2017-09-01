@@ -28,7 +28,7 @@ public class Snake {
     }
 
     public boolean isAlive() {
-        return isAlive;
+        return true;
     }
 
     public SnakeDirection getDirection() {
