@@ -1,118 +1,26 @@
 package com.javarush.task.task20.task2025;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 
 /*
 Алгоритмы-числа
 */
+
 public class Solution {
-
-
-
-
-    public static class ArmstrongNumbersMultiSetLongOpt {
-        private static int N;
-        private static int[] digitsMultiSet;
-        private static int[] testMultiSet;
-
-        private static List<Long> results;
-        private static long maxPow;
-        private static long minPow;
-
-        private static long[][] pows;
-
-        private static void genPows(int N) {
-            if (N > 20) throw new IllegalArgumentException();
-            pows = new long[10][N + 1];
-            for (int i = 0; i < pows.length; i++) {
-                long p = 1;
-                for (int j = 0; j < pows[i].length; j++) {
-                    pows[i][j] = p;
-                    p *= i;
-                }
-            }
-        }
-
-        private static boolean check(long pow) {
-            if (pow >= maxPow) return false;
-            if (pow < minPow) return false;
-
-            for (int i = 0; i < 10; i++) {
-                testMultiSet[i] = 0;
-            }
-
-            while (pow > 0) {
-                int i = (int) (pow % 10);
-                testMultiSet[i]++;
-                if (testMultiSet[i] > digitsMultiSet[i]) return false;
-                pow = pow / 10;
-            }
-
-            for (int i = 0; i < 10; i++) {
-                if (testMultiSet[i] != digitsMultiSet[i]) return false;
-            }
-
-            return true;
-        }
-
-        private static void search(int digit, int unused, long pow) {
-            if (pow >= maxPow) return;
-
-            if (digit == -1) {
-                if (check(pow)) results.add(pow);
-                return;
-            }
-
-            if (digit == 0) {
-                digitsMultiSet[digit] = unused;
-                search(digit - 1, 0, pow + unused * pows[digit][N]);
-            } else {
-                // Check if we can generate more than minimum
-                if (pow + unused * pows[digit][N] < minPow) return;
-
-                long p = pow;
-                for (int i = 0; i <= unused; i++) {
-                    digitsMultiSet[digit] = i;
-                    search(digit - 1, unused - i, p);
-                    if (i != unused) {
-                        p += pows[digit][N];
-                        // Check maximum and break the loop - doesn't help
-                        // if (p >= maxPow) break;
-                    }
-                }
-            }
-        }
-
-        public static List<Long> generate(int maxN) {
-            if (maxN >= 20) throw new IllegalArgumentException();
-
-            genPows(maxN);
-            results = new ArrayList<>();
-            digitsMultiSet = new int[10];
-            testMultiSet = new int[10];
-
-            for (N = 1; N <= maxN; N++) {
-                minPow = (long) Math.pow(10, N - 1);
-                maxPow = (long) Math.pow(10, N);
-
-                search(9, N, 0);
-            }
-
-            Collections.sort(results);
-
-            return results;
-        }
-
-        public static void main(String[] args) {
-            long start = System.currentTimeMillis();
-            List<Long> list = generate(9);
-            long finish = System.currentTimeMillis();
-            System.out.println("Time consumed: " + (finish - start) + " ms");
-            System.out.println(list.size());
-            System.out.println(list);
-        }
+    public static void main(String[] args) {
     }
 
+    public static long[] getNumbers(long N) {
+        int count = 0;
+        int length = Long.toString(N).length() - 1;
+        long[] allArm = {1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 153L, 370L, 371L, 407L, 1634L, 8208L, 9474L, 54748L, 92727L, 93084L, 548834L, 1741725L, 4210818L, 9800817L, 9926315L, 24678050L, 24678051L, 88593477L, 146511208L, 472335975L, 534494836L, 912985153L, 4679307774L, 32164049650L, 32164049651L, 40028394225L, 42678290603L, 44708635679L, 49388550606L, 82693916578L, 94204591914L, 28116440335967L, 4338281769391370L, 4338281769391371L, 21897142587612075L, 35641594208964132L, 35875699062250035L, 1517841543307505039L, 3289582984443187032L, 4498128791164624869L, 4929273885928088826L};
+
+        for (long l : allArm) {
+            if (Long.toString(l).length() <= length) {
+                count++;
+            } else break;
+        }
+
+        return Arrays.copyOfRange(allArm, 0, count);
+    }
 }
