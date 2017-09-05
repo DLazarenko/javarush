@@ -37,7 +37,7 @@ public class Solution {
         }
     }
 
-    static class JavaRush {
+    public static class JavaRush {
         public List<User> users = new ArrayList<>();
 
         public void save(OutputStream outputStream) throws Exception {
