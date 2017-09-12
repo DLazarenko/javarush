@@ -3,6 +3,7 @@ package com.javarush.task.task24.task2408;
 import java.util.Date;
 
 public class Dog implements Pet {
+
     private String name;
 
     public Dog(String name) {
