@@ -3,7 +3,7 @@ package com.javarush.task.task25.task2510;
 public class Solution extends Thread {
 
     public Solution() {
-        UncaughtExceptionHandler ex = new UncaughtExceptionHandler() {
+        setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread t, Throwable e) {
                 if (e instanceof Error) {
@@ -14,7 +14,7 @@ public class Solution extends Thread {
                     System.out.println("ХЗ");
                 }
             }
-        };
+        });
     }
 
     public static void main(String[] args) {
