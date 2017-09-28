@@ -26,7 +26,9 @@ public class University {
 
     public List<Student> getStudents() {
         return students;
-    }public void setStudents(List<Student> students) {
+    }
+
+    public void setStudents(List<Student> students) {
         this.students = students;
     }
 
@@ -35,17 +37,37 @@ public class University {
         this.age = age;
     }
 
-    public Student getStudentWithAverageGrade() {
-        //TODO:
+    public Student getStudentWithAverageGrade(double averageGrade) {
+
+        for (Student student : students) {
+            if (averageGrade == student.getAverageGrade()) {
+                return student;
+            }
+        }
         return null;
     }
 
-    public Student getStudentWithMaxAverageGrade(double averageGrade) {
-        //TODO:
-        return null;
+    public Student getStudentWithMaxAverageGrade() {
+        double result = students.get(0).getAverageGrade();
+        for (Student student : students) {
+            if (result < student.getAverageGrade()) {
+                result = student.getAverageGrade();
+            }
+        }
+        return getStudentWithAverageGrade(result);
     }
 
-    public void getStudentWithMinAverageGradeAndExpel() {
-        //TODO:
+    public Student getStudentWithMinAverageGrade() {
+        double result = students.get(0).getAverageGrade();
+        for (Student student : students) {
+            if (result > student.getAverageGrade()) {
+                result = student.getAverageGrade();
+            }
+        }
+        return getStudentWithAverageGrade(result);
+    }
+
+    public void expel(Student student) {
+        students.remove(student);
     }
 }

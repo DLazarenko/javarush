@@ -11,6 +11,7 @@ public class Teacher extends UniversityPerson {
         super(name, age);
         this.numberOfStudents = numberOfStudents;
     }
+
     public void live() {
         teach();
     }
@@ -18,7 +19,8 @@ public class Teacher extends UniversityPerson {
     public void teach() {
     }
 
-    public void printData() {
-        System.out.println("Преподаватель: " + name);
+    @Override
+    public String getPosition() {
+        return "Преподаватель";
     }
 }
